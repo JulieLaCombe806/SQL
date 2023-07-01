@@ -1,0 +1,43 @@
+---Create a store database
+
+CREATE TABLE plants (id INTEGER PRIMARY KEY, plants TEXT, price INTEGER, light TEXT, water TEXT, care TEXT, popularity INTEGER);
+
+
+INSERT INTO plants VALUES (1, "pothos", 25, "moderate", "monthly", "easy",10);
+INSERT INTO plants VALUES (2, "monstera", 40, "moderate", "monthly", "easy", 9);
+INSERT INTO plants VALUES (3, "snake plant", 15, "moderate", "monthly", "easy", 10);
+INSERT INTO plants VALUES (4, "zz plant", 20, "moderate", "monthly", "difficult", 7);
+INSERT INTO plants VALUES (5, "aloe vera", 15, "moderate", "monthly", "easy", 4);
+INSERT INTO plants VALUES (6, "philodendron", 20, "moderate", "monthly", "difficult", 3);
+INSERT INTO plants VALUES (7, "violet", 15, "moderate", "monthly", "easy", 8);
+INSERT INTO plants VALUES (8, "peace lily", 35, "moderate", "biweekly", "difficult", 19);
+INSERT INTO plants VALUES (9, "chinese evergreen", 15, "bright", "monthly", "easy", 1);
+INSERT INTO plants VALUES (10, "birdsnest fern", 20, "low", "weekly", "easy", 4);
+INSERT INTO plants VALUES (11, "dracena", 25, "moderate", "monthly", "easy", 4);
+INSERT INTO plants VALUES (12, "spider plant", 10, "moderate", "monthly", "easy", 13);
+INSERT INTO plants VALUES (13, "fiddle leaf fig", 40, "moderate", "monthly", "difficult", 3);
+INSERT INTO plants VALUES (14, "calathea", 25, "moderate", "biweekly", "difficult", 1);
+INSERT INTO plants VALUES (15, "anthurium", 30, "bright", "biweeklyy", "difficult", 2);
+
+
+---Display the data ordered by price.
+SELECT * FROM plants 
+ORDER BY price asc; 
+
+---Display the data ordered by lighting needs.
+SELECT * FROM plants 
+ORDER BY light;
+
+---Display the data ordered by watering needs.
+SELECT * FROM plants 
+ORDER BY water;
+
+---Display the data ordered by care.
+SELECT * FROM plants 
+ORDER BY care;
+
+---What are the 5  most popular plants?
+SELECT plants, price, light, water, care, popularity
+FROM plants
+ORDER BY popularity desc
+limit 5; 
