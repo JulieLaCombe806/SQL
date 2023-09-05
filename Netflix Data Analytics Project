@@ -34,3 +34,13 @@ FROM "netflix_titles_info"
 WHERE type='Movie'
 ORDER BY release_year asc
 LIMIT 1;
+
+#6 Joining tables to determine director, title of movie, type of movie and rating.
+Select people.show_id
+,people.director
+,titles.title
+,titles.type
+,titles.rating
+FROM "netflix_people" people
+LEFT JOIN "netflix_titles_info" titles
+ON people.show_id = titles.show_id
