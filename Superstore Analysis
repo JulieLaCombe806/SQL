@@ -1,4 +1,5 @@
----Project #1 Superstore Analysis---
+#This project utilizes the follow Superstore data: 
+
 
 CREATE TABLE superstore (
     item_id INTEGER PRIMARY KEY,
@@ -30,18 +31,18 @@ VALUES
 
 
 
----Order the inventory by price---
+#Use a SELECT statement to order the items by price.
 SELECT price, item_name
 FROM superstore
 ORDER BY price desc;
 
 
----What is the highest priced item in inventory?---
+#Show a statistic about the item prices.
 SELECT MAX (price), item_name
 FROM superstore
 ORDER BY price desc;
 
----Query showing the price for items in the Kitchen Supplies category---
+#Show a statistic about the price for items in the category of "Kitchen Supplies". 
 SELECT *
 FROM superstore
 WHERE superstore.category= "Kitchen Supplies";
