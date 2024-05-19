@@ -1,0 +1,138 @@
+# # For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+
+#Creating the table:
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness decimal(8,7) NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL )
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL.
+
+SELECT * FROM BIT_DB.Spotifydata
+
+# I then began querying the data:
+
+# 1. What are the Top 10 songs based on popularity?
+
+SELECT
+track_name, artist_name, popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc
+LIMIT 10 
+
+
+#2 What is the average danceability of the top 10 most popular songs? Danceability describes how suitable the song is for dancing based on a combination of musical elements such 
+as tempo, rhythm, and beat.
+#Using a subquery in a WHERE statement
+
+SELECT AVG(danceability) AS avg_danceability
+FROM BIT_DB.Spotifydata
+WHERE track_name IN (
+  SELECT track_name 
+  FROM BIT_DB.Spotifydata
+  ORDER BY popularity DESC
+  LIMIT 10);
+  
+
+#3. Who is the most popular artist?
+
+SELECT artist_name, MAX(popularity) 
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc;
+
+
+#4. Which artists have more than one track in the Top 50?
+# Using a subquery)
+
+
+SELECT artist_name
+FROM BIT_DB.Spotifydata
+WHERE track_name IN (
+    SELECT track_name
+    FROM BIT_DB.Spotifydata
+    GROUP BY track_name
+    ORDER BY COUNT(*) DESC
+    LIMIT 50
+)
+GROUP BY artist_name
+HAVING COUNT(DISTINCT track_name) > 1; 
+
+
+#5 What artist has the longest song? 
+
+SELECT artist_name, duration_ms
+FROM BIT_DB.Spotifydata
+WHERE duration_ms = (SELECT MAX(duration_ms) FROM BIT_DB.Spotifydata)
+GROUP BY duration_ms
+HAVING MAX(duration_ms)
+ORDER BY artist_name, duration_ms;
+
+
+#6 Rank the top 10 loudest songs in descending order.
+     
+SELECT track_name, loudness
+    FROM BIT_DB.Spotifydata
+    GROUP BY track_name
+    ORDER BY loudness DESC
+    LIMIT 10
+    
+#7 Create a descending rank of the danceability using a CASE statement.
+
+SELECT track_name, danceability,
+
+  CASE
+     WHEN danceability >=0.8 THEN "Great"
+     WHEN danceability >=0.7 THEN "Good"
+     WHEN danceability >=0.6 THEN "Ok"
+     ELSE "don't waste your time"
+     END AS "Let's dance!"
+FROM BIT_DB.Spotifydata
+ORDER BY danceability DESC;
+
+
+#8 Determine the average danceability of the top 50 popular songs.#
+
+SELECT artist_name, track_name, AVG(danceability)
+FROM BIT_DB.Spotifydata
+GROUP BY popularity
+ORDER BY popularity DESC
+LIMIT 50;
+
+
+#9 Determine the best songs to walk to based on the tempo of 120 - 140
+
+SELECT tempo, track_name, artist_name  
+ FROM BIT_DB.Spotifydata
+   WHERE tempo BETWEEN 120 AND 140
+   GROUP BY track_name
+   ORDER BY tempo desc;
+   
+
+#10 Find the songs that are more positive based on their high valence. Tracks with a high valence sound more positive.
+
+SELECT valence, track_name, artist_name
+ FROM BIT_DB.Spotifydata
+ WHERE valence BETWEEN 0.5 AND 1.0
+ GROUP BY track_name
+ ORDER BY valence DESC;
